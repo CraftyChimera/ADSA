@@ -20,18 +20,20 @@ class ArithmeticCoding:
     def Compress(self, word):
         low_final = 0.0
         range = 1.0
+        high_final = 1.0
 
         for c in word:
             low = low_final + range * self.rangeLow[c]
             high = low_final + range * self.rangeHigh[c]
             range = high - low
             low_final = low
+            high_final = high
 
         value = 0
         x = 0.5
-        while(value < low):
+        while(value < low_final):
             value += x
-            if (value > high):
+            if (value > high_final):
                 value -= x
             x /= 2
         return value

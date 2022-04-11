@@ -9,15 +9,16 @@ with open("test_data.txt") as dataFile:
         probs.append(float(line.split(" ")[1]))
 
 ArthCode = ArithmeticCoding(symbols, probs, "$")
-
-code = ArthCode.Compress("AAAAAEEEAEEAEAEAEEACCCC$")
+inp = "AAAAAEEEAEEAEAEAEEACCCC$"
+code = ArthCode.Compress(inp)
 word = ArthCode.Decompress(code)
-# Output results
+
 print("Arithmetic Coding test:")
-print("~~~~~~~~~~~~~~~~~~~~~~~")
-print('Compress ')
+print("Compression:")
+print(f"Input:{inp}")
 print(f"Result:{code}")
-print("_______________________\n")
-print(f"Decompress:{code}")
+print("_______________________")
+print("Decompression")
+print(f"Input:{code}")
 print(f"Result: {word}\n")
 print("=======================")
