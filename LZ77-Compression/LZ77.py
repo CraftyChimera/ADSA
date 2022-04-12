@@ -9,7 +9,7 @@ class LZ77Compressor:
         self.window_size = min(window_size, self.MAX_WINDOW_SIZE)
         self.lookahead_buffer_size = 15
 
-    def compress(self, input_file_path, output_file_path=None, verbose=False):
+    def compress(self, input_file_path, output_file_path=None):
         data = None
         i = 0
         output_buffer = bitarray(endian='big')
@@ -32,18 +32,9 @@ class LZ77Compressor:
                 output_buffer.frombytes(
                     bytes([((bestMatchDistance & 0xf) << 4) | bestMatchLength]))
 
-                if verbose:
-                    print("<1, %i, %i>" %
-                          (bestMatchDistance, bestMatchLength), end='')
-
-                i += bestMatchLength
-
             else:
                 output_buffer.append(False)
                 output_buffer.frombytes(bytes([data[i]]))
-
-                if verbose:
-                    print("<0, %s>" % data[i], end='')
 
                 i += 1
         output_buffer.fill()
@@ -88,7 +79,7 @@ class LZ77Compressor:
                 distance = (byte1 << 4) | (byte2 >> 4)
                 length = (byte2 & 0xf)
 
-                for i in range(length):
+                for _ in range(length):
                     output_buffer.append(output_buffer[-distance])
         out_data = b''.join(output_buffer)
 
@@ -123,8 +114,7 @@ class LZ77Compressor:
 
                 last = len(substring) % (current_position - i)
 
-                matched_string = data[i:current_position] * \
-                    repetitions + data[i:i+last]
+                matched_string = data[i:current_position] * repetitions + data[i:i+last]
 
                 if matched_string == substring and len(substring) > best_match_length:
                     best_match_distance = current_position - i
