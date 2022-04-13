@@ -31,12 +31,15 @@ class LZ77Compressor:
                 output_buffer.frombytes(bytes([bestMatchDistance >> 4]))
                 output_buffer.frombytes(
                     bytes([((bestMatchDistance & 0xf) << 4) | bestMatchLength]))
+                print(f"<1, {bestMatchDistance}, {bestMatchLength}>")
 
+                i += bestMatchLength
             else:
                 output_buffer.append(False)
                 output_buffer.frombytes(bytes([data[i]]))
-
+                print(f"<0, {chr(data[i])}>")
                 i += 1
+
         output_buffer.fill()
         if output_file_path:
             try:
@@ -114,7 +117,8 @@ class LZ77Compressor:
 
                 last = len(substring) % (current_position - i)
 
-                matched_string = data[i:current_position] * repetitions + data[i:i+last]
+                matched_string = data[i:current_position] * \
+                    repetitions + data[i:i+last]
 
                 if matched_string == substring and len(substring) > best_match_length:
                     best_match_distance = current_position - i

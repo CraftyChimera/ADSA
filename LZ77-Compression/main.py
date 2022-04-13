@@ -7,7 +7,6 @@ input_file_path = './input.txt'
 output_file_path = './compressed_file'
 
 compressor.compress(input_file_path, output_file_path)
-compressed_data = compressor.compress(input_file_path)
 
 input_file_path = './compressed_file'
 output_file_path = './decompressed_file.txt'
